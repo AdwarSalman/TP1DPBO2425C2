@@ -48,3 +48,5 @@ Interface web: ada form untuk tambah dan ubah (menggunakan multipart/form-data u
 
 ## Dokumentasi
 
+[![Thumbnail Video](https://raw.githubusercontent.com/username/repository/main/assets/images/thumbnail.jpg)](https://drive.google.com/file/d/1GEDXRm8phPBnjrASQlGQsj70ejX9TvJK/view?usp=sharing)
+
