@@ -1,9 +1,9 @@
-#include <iostream>     // untuk input-output
-#include <vector>       // STL vector sebagai array dinamis (penyimpanan produk)
-#include <limits>       // untuk clear buffer input
-#include "GerlongElectric.h" // import class Produk
+#include <iostream>     // library standar untuk input-output
+#include <vector>       // STL vector sebagai array dinamis
+#include <limits>       // untuk membersihkan buffer input
+#include "GerlongElectric.h" // header custom berisi class Produk
 
-// Deklarasi fungsi-fungsi CRUD dan helper
+// Deklarasi fungsi-fungsi CRUD + helper
 void tambahProduk(std::vector<Produk>& daftarProduk, int& nextId);
 void tampilkanSemuaProduk(const std::vector<Produk>& daftarProduk);
 void updateProduk(std::vector<Produk>& daftarProduk);
@@ -12,19 +12,19 @@ void cariProduk(const std::vector<Produk>& daftarProduk);
 void clearInputBuffer();
 
 int main() {
-    // Array of list produk menggunakan vector
+    // Vector untuk menyimpan daftar produk
     std::vector<Produk> daftarProduk;
-    int nextId = 1; // ID auto increment untuk produk baru
+    int nextId = 1; // ID auto increment
 
-    // Tambah 3 produk awal (hardcode) supaya daftar tidak kosong
+    // Tambahkan produk default (hardcode)
     daftarProduk.push_back(Produk(nextId++, "Laptop Gaming", "Komputer", 15000000.0));
     daftarProduk.push_back(Produk(nextId++, "Smartphone Android", "Handphone", 4500000.0));
     daftarProduk.push_back(Produk(nextId++, "Headphone Nirkabel", "Aksesoris", 1200000.0));
     std::cout << "Data produk awal berhasil dimuat." << std::endl;
 
-    int pilihan; // menampung input pilihan user
+    int pilihan; // untuk input menu
 
-    // Menu utama (loop sampai user pilih keluar)
+    // Menu utama
     do {
         std::cout << "\n=== Menu Manajemen GerlongElectric ===" << std::endl;
         std::cout << "1. Tambah Produk" << std::endl;
@@ -36,9 +36,8 @@ int main() {
         std::cout << "Masukkan pilihan Anda: ";
         std::cin >> pilihan;
 
-        clearInputBuffer(); // bersihkan buffer setelah input angka
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        // Jalankan sesuai pilihan user
         switch (pilihan) {
             case 1: tambahProduk(daftarProduk, nextId); break;
             case 2: tampilkanSemuaProduk(daftarProduk); break;
@@ -46,14 +45,14 @@ int main() {
             case 4: hapusProduk(daftarProduk); break;
             case 5: cariProduk(daftarProduk); break;
             case 6: std::cout << "Terima kasih telah menggunakan aplikasi ini!" << std::endl; break;
-            default: std::cout << "Pilihan tidak valid. Coba lagi." << std::endl; break;
+            default: std::cout << "Pilihan tidak valid. Silakan coba lagi." << std::endl; break;
         }
     } while (pilihan != 6);
 
     return 0;
 }
 
-// Membersihkan buffer input agar tidak error
+// Fungsi untuk membersihkan buffer input setelah error
 void clearInputBuffer() {
     if (std::cin.fail()) {
         std::cin.clear();
@@ -61,7 +60,7 @@ void clearInputBuffer() {
     }
 }
 
-// CRUD: CREATE → Tambah produk baru
+// CREATE: Tambah produk baru
 void tambahProduk(std::vector<Produk>& daftarProduk, int& nextId) {
     std::string nama, jenis;
     double harga;
@@ -74,7 +73,6 @@ void tambahProduk(std::vector<Produk>& daftarProduk, int& nextId) {
     std::cout << "Masukkan Harga: ";
     std::cin >> harga;
 
-    // Validasi harga
     if (std::cin.fail() || harga < 0) {
         std::cout << "Input harga tidak valid. Produk tidak ditambahkan." << std::endl;
         clearInputBuffer();
@@ -88,7 +86,7 @@ void tambahProduk(std::vector<Produk>& daftarProduk, int& nextId) {
     std::cout << "Produk berhasil ditambahkan dengan ID " << newProduk.getId() << "." << std::endl;
 }
 
-// CRUD: READ → Tampilkan semua produk
+// READ: Tampilkan semua produk
 void tampilkanSemuaProduk(const std::vector<Produk>& daftarProduk) {
     if (daftarProduk.empty()) {
         std::cout << "\nTidak ada produk yang tersedia." << std::endl;
@@ -97,27 +95,30 @@ void tampilkanSemuaProduk(const std::vector<Produk>& daftarProduk) {
 
     std::cout << "\n=== Daftar Semua Produk ===" << std::endl;
     for (const auto& produk : daftarProduk) {
-        produk.display(); // panggil fungsi display dari class
+        produk.display();
     }
 }
 
-// CRUD: UPDATE → Ubah produk berdasarkan ID
+// UPDATE: Ubah produk berdasarkan ID
 void updateProduk(std::vector<Produk>& daftarProduk) {
     int idToUpdate;
     std::cout << "\n--- Ubah Produk ---" << std::endl;
     std::cout << "Masukkan ID Produk yang ingin diubah: ";
     std::cin >> idToUpdate;
 
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
     for (auto& produk : daftarProduk) {
         if (produk.getId() == idToUpdate) {
-            clearInputBuffer();
             std::string newNama, newJenis;
             double newHarga;
 
             std::cout << "Masukkan Nama baru: ";
             std::getline(std::cin, newNama);
+
             std::cout << "Masukkan Jenis baru: ";
             std::getline(std::cin, newJenis);
+
             std::cout << "Masukkan Harga baru: ";
             std::cin >> newHarga;
 
@@ -128,7 +129,6 @@ void updateProduk(std::vector<Produk>& daftarProduk) {
             }
             clearInputBuffer();
 
-            // Setter harga sudah ada validasi negatif
             if (produk.setHarga(newHarga)) {
                 produk.setNama(newNama);
                 produk.setJenis(newJenis);
@@ -142,7 +142,8 @@ void updateProduk(std::vector<Produk>& daftarProduk) {
     std::cout << "Produk dengan ID " << idToUpdate << " tidak ditemukan." << std::endl;
 }
 
-// CRUD: DELETE → Hapus produk berdasarkan ID
+
+// DELETE: Hapus produk
 void hapusProduk(std::vector<Produk>& daftarProduk) {
     int idToDelete;
     std::cout << "\n--- Hapus Produk ---" << std::endl;
@@ -160,7 +161,7 @@ void hapusProduk(std::vector<Produk>& daftarProduk) {
     std::cout << "Produk dengan ID " << idToDelete << " tidak ditemukan." << std::endl;
 }
 
-// CRUD: SEARCH → Cari produk berdasarkan ID
+// SEARCH: Cari produk
 void cariProduk(const std::vector<Produk>& daftarProduk) {
     int idToFind;
     std::cout << "\n--- Cari Produk ---" << std::endl;
