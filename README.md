@@ -1,47 +1,50 @@
-Proyek Tugas Praktikum 1: GerlongElectric
-Proyek ini merupakan implementasi sistem manajemen data produk toko elektronik "GerlongElectric" menggunakan konsep Object-Oriented Programming (OOP) dalam berbagai bahasa pemrograman.
+# Proyek Tugas Praktikum 1: GerlongElectric
 
-Janji
-Saya bersumpah bahwa saya mengerjakan tugas ini sendiri dan tidak mencontek/memberi contek.
+Proyek ini adalah implementasi sistem manajemen data produk toko elektronik **GerlongElectric** menggunakan paradigma Object-Oriented Programming (OOP). 
+Implementasi tersedia dalam empat bahasa: C++, Java, Python, dan PHP (web). 
+Setiap implementasi menyediakan fungsi dasar manajemen produk: tambah (Create), tampil (Read), ubah (Update), hapus (Delete), dan cari (Search).
 
-Penjelasan Desain dan Kode
-Desain Berbasis Objek (OOP)
-Proyek ini dirancang dengan pendekatan berorientasi objek. Semua data produk diwakili oleh sebuah kelas bernama Produk. Kelas ini berfungsi sebagai cetakan untuk setiap objek produk yang dibuat dalam program.
+## Janji
+Saya bersumpah bahwa saya mengerjakan tugas ini sendiri dan tidak mencontek maupun memberi contek.
 
-Struktur Data dan Enkapsulasi
-Atribut: Kelas Produk memiliki lima atribut utama: id, nama, jenis, harga, dan gambar. Atribut ini dibuat privat untuk menerapkan enkapsulasi, menjaga integritas data.
+## Desain Umum
+Desain inti mengikuti pola OOP: ada kelas `Produk` yang menjadi blueprint untuk setiap item produk. Atribut utama adalah `id`, `nama`, `jenis`, `harga` (pada implementasi PHP juga ada atribut `gambar`). 
+Semua atribut disembunyikan (encapsulation) dan hanya diakses/diubah melalui getter dan setter; setter harga dilengkapi validasi agar tidak menerima nilai negatif. 
+Kumpulan objek disimpan dalam struktur koleksi sesuai bahasa: `std::vector` di C++, `ArrayList` di Java, `list` di Python, dan array dalam `$_SESSION` di PHP. 
+Alur program pada dasarnya sama: user menambah item → program membuat objek Produk baru (dengan id unik), user bisa melihat semua item, mengubah berdasarkan ID, menghapus berdasarkan ID, dan mencari item tertentu.
 
-Getter dan Setter: Akses dan modifikasi atribut hanya bisa dilakukan melalui metode getter (untuk mengambil nilai) dan setter (untuk mengubah nilai). Untuk atribut harga, setter memiliki validasi untuk memastikan nilai yang dimasukkan selalu positif.
+---
 
-Koleksi Objek: Semua objek produk disimpan dalam sebuah list of objects (std::vector di C++, ArrayList di Java, list di Python, dan $_SESSION di PHP) agar mudah dikelola.
+## Implementasi — Penjelasan Per Bahasa (lebih detail)
 
-Alur Program (CRUD)
-Program ini mengimplementasikan operasi dasar manajemen data CRUD (Create, Read, Update, Delete) dan satu operasi tambahan, yaitu Cari (Search).
+### C++
+File utama: `GerlongElectric.h` (definisi class `Produk`) dan `main.cpp` (menu + fungsi CRUD).
+Kelas `Produk` berisi atribut privat `id`, `nama`, `jenis`, `harga`. Konstruktor menginisialisasi semua atribut, destructor dibiarkan default karena tidak ada alokasi dinamis. Getter bersifat `const` dan mengembalikan nilai, setter untuk `nama`/`jenis` mengubah string, setter `setHarga(double)` memeriksa `>= 0` dan mengembalikan `bool` (true saat sukses). Method `display()` menggunakan `<iomanip>` untuk memformat harga (mis. `std::fixed` + `std::setprecision(0)`).
 
-Create (Tambah): Pengguna dapat menambah produk baru, dan program akan membuat objek Produk baru yang unik.
+Di `main.cpp` data produk disimpan dalam `std::vector<Produk> daftarProduk;` dan variabel `int nextId` dipakai untuk auto-increment ID. Penambahan produk menggunakan `push_back(Produk(...))`. Penghapusan dilakukan dengan iterator (`erase(it)`), sedangkan pencarian/ubah dilakukan dengan loop dan pencocokan `produk.getId()`. Ada helper `clearInputBuffer()` yang mengecek `std::cin.fail()` dan membersihkan buffer menggunakan `ignore()` — ini penting karena program mengombinasikan `operator>>` dan `std::getline()`.
 
-Read (Tampilkan): Program dapat menampilkan semua produk yang tersimpan dalam daftar.
 
-Update (Ubah): Pengguna dapat mengubah data produk yang sudah ada dengan mencari berdasarkan ID.
+### Java
 
-Delete (Hapus): Pengguna dapat menghapus produk dari daftar berdasarkan ID.
+File utama: Produk.java dan GerlongElectric.java.
+Produk di Java punya atribut privat id, nama, jenis, harga. Konstruktor menerima semua atribut. Java tidak memiliki destructor manual; garbage collector mengurus memori. Getter dan setter konvensional ada; setHarga(double) melakukan validasi (mengembalikan boolean). Method display() menulis detail ke System.out.
 
-Cari: Program dapat mencari dan menampilkan satu produk spesifik.
+GerlongElectric.java menyimpan produk di private static ArrayList<Produk> daftarProduk. ID unik dikelola lewat private static int nextId. Input menggunakan Scanner dan ada penanganan InputMismatchException untuk input yang tidak valid (mis. user mengetik huruf saat diminta angka). CRUD diimplementasikan dengan metode: tambahProduk(), tampilkanSemuaProduk(), updateProduk(), hapusProduk(), cariProduk(). Fungsi helper cariProdukById(int id) mengembalikan Produk atau null.
 
-Implementasi
-Logika program ini diimplementasikan dalam empat bahasa berbeda, dengan antarmuka berbasis CLI (untuk C++, Java, Python) dan antarmuka web (untuk PHP).
+### Python
 
-Dokumentasi
-Berikut adalah tangkapan layar yang menunjukkan program berjalan dan berfungsi dengan baik.
+File: GerlongElectric.py.
+Produk di Python memakai konvensi atribut privat _id, _nama, _jenis, _harga. Getter & setter diimplementasikan dengan @property dan nama setter yang sesuai. Setter harga menaikkan ValueError jika harga negatif sehingga caller bisa try/except dan menolak perubahan saat input salah. __str__ mengembalikan representasi string yang rapi sehingga cukup print(produk) untuk menampilkan.
 
-C++
-(masukkan gambar screenshot program C++ Anda di sini)
+Data disimpan di daftar_produk (list biasa) dan next_id integer untuk auto-increment. Fungsi CRUD terpisah (tambah_produk, tampilkan_semua_produk, update_produk, hapus_produk, cari_produk). main() menambahkan beberapa produk default lalu menjalankan loop menu berbasis input().
 
-Java
-(masukkan gambar screenshot program Java Anda di sini)
+### PHP (Web)
 
-Python
-(masukkan gambar screenshot program Python Anda di sini)
+File: TP1.php (menggabungkan class Produk, session storage, form HTML untuk CRUD, dan tampilan).
+Kelas Produk pada implementasi PHP berisi id, nama, jenis, harga, dan gambar. Constructor menginisialisasi atribut, getter/setter disediakan. Server-side penyimpanan memakai $_SESSION sehingga data bertahan antar refresh selama session aktif. Pada awal, skrip menginisialisasi $_SESSION['products'] (array) dan $_SESSION['next_id'] untuk auto-increment.
 
-PHP (Tampilan Web)
-(masukkan gambar screenshot tampilan web PHP Anda di sini)
+Interface web: ada form untuk tambah dan ubah (menggunakan multipart/form-data untuk unggah gambar), serta tombol/hyperlink untuk menghapus atau mengedit item. Upload file disimpan ke folder img/ menggunakan move_uploaded_file() dan nama file default dibuat dengan basename($_FILES['gambar']['name']).
+
+
+## Dokumentasi
+
