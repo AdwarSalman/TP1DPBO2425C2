@@ -147,4 +147,41 @@ public class GerlongElectric {
             } else {
                 System.out.println("Produk dengan ID " + idToDelete + " tidak ditemukan.");
             }
-        } catch (java.util.InputMismatchEx
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Input ID tidak valid. Masukkan angka.");
+            scanner.nextLine();
+        }
+    }
+
+    // SEARCH: cari produk
+    private static void cariProduk() {
+        System.out.println("\n--- Cari Produk ---");
+        System.out.print("Masukkan ID Produk yang ingin dicari: ");
+        
+        try {
+            int idToFind = scanner.nextInt();
+            scanner.nextLine();
+
+            Produk foundProduk = cariProdukById(idToFind);
+            if (foundProduk != null) {
+                System.out.println("\nProduk ditemukan:");
+                foundProduk.display();
+            } else {
+                System.out.println("Produk dengan ID " + idToFind + " tidak ditemukan.");
+            }
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Input ID tidak valid. Masukkan angka.");
+            scanner.nextLine();
+        }
+    }
+
+    // Helper: cari produk di ArrayList berdasarkan ID
+    private static Produk cariProdukById(int id) {
+        for (Produk produk : daftarProduk) {
+            if (produk.getId() == id) {
+                return produk;
+            }
+        }
+        return null;
+    }
+}
