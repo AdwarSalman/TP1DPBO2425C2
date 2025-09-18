@@ -1,15 +1,16 @@
-import java.util.ArrayList; // Library untuk menggunakan ArrayList (list dinamis)
-import java.util.Scanner;   // Library untuk membaca input dari keyboard
+import java.util.ArrayList; // ArrayList → list dinamis mirip vector di C++
+import java.util.Scanner;   // Scanner → input user
 
-public class GerlongElectric { // Nama kelas dan file sudah diperbarui
+public class GerlongElectric {
 
+    // Array of list produk (database sementara)
     private static ArrayList<Produk> daftarProduk = new ArrayList<>();
-    private static int nextId = 1;
+    private static int nextId = 1; // ID auto increment
     private static Scanner scanner = new Scanner(System.in);
 
-    // Metode utama, titik masuk program.
+    // Titik masuk program
     public static void main(String[] args) {
-        // Hardcode produk awal
+        // Tambah produk awal (hardcode)
         daftarProduk.add(new Produk(nextId++, "Laptop Gaming", "Komputer", 15000000.0));
         daftarProduk.add(new Produk(nextId++, "Smartphone Android", "Handphone", 4500000.0));
         daftarProduk.add(new Produk(nextId++, "Headphone Nirkabel", "Aksesoris", 1200000.0));
@@ -17,51 +18,36 @@ public class GerlongElectric { // Nama kelas dan file sudah diperbarui
 
         int pilihan;
 
-        // Loop do-while untuk menampilkan menu berulang kali
+        // Loop menu utama
         do {
             tampilkanMenu();
             System.out.print("Masukkan pilihan Anda: ");
             
-            // Menggunakan try-catch untuk menangani input yang tidak valid
             try {
-                pilihan = scanner.nextInt();
-                scanner.nextLine(); // Membuang karakter newline
+                pilihan = scanner.nextInt(); 
+                scanner.nextLine(); // buang newline supaya input string berikutnya aman
                 
-                // Switch-case untuk menjalankan fungsi berdasarkan pilihan pengguna
                 switch (pilihan) {
-                    case 1:
-                        tambahProduk();
-                        break;
-                    case 2:
-                        tampilkanSemuaProduk();
-                        break;
-                    case 3:
-                        updateProduk();
-                        break;
-                    case 4:
-                        hapusProduk();
-                        break;
-                    case 5:
-                        cariProduk();
-                        break;
-                    case 6:
-                        System.out.println("Terima kasih telah menggunakan aplikasi ini!");
-                        break;
-                    default:
-                        System.out.println("Pilihan tidak valid. Silakan coba lagi.");
-                        break;
+                    case 1: tambahProduk(); break; // CREATE
+                    case 2: tampilkanSemuaProduk(); break; // READ
+                    case 3: updateProduk(); break; // UPDATE
+                    case 4: hapusProduk(); break; // DELETE
+                    case 5: cariProduk(); break;  // SEARCH
+                    case 6: System.out.println("Terima kasih telah menggunakan aplikasi ini!"); break;
+                    default: System.out.println("Pilihan tidak valid."); break;
                 }
             } catch (java.util.InputMismatchException e) {
+                // Jika input bukan angka
                 System.out.println("Input tidak valid. Masukkan angka.");
-                scanner.nextLine(); // Membersihkan baris yang salah
-                pilihan = 0; // Mengatur pilihan ke 0 agar loop berlanjut
+                scanner.nextLine(); // bersihkan buffer
+                pilihan = 0;
             }
         } while (pilihan != 6);
-        
-        scanner.close(); // Menutup objek scanner
+
+        scanner.close(); // tutup scanner saat keluar
     }
 
-    // Metode untuk menampilkan menu program.
+    // Menampilkan menu utama
     private static void tampilkanMenu() {
         System.out.println("\n=== Menu Manajemen GerlongElectric ===");
         System.out.println("1. Tambah Produk");
@@ -72,7 +58,7 @@ public class GerlongElectric { // Nama kelas dan file sudah diperbarui
         System.out.println("6. Keluar");
     }
 
-    // Fungsi "Tambah Produk" (Create)
+    // CREATE: Tambah produk
     private static void tambahProduk() {
         System.out.println("\n--- Tambah Produk Baru ---");
         System.out.print("Masukkan Nama Produk: ");
@@ -84,7 +70,7 @@ public class GerlongElectric { // Nama kelas dan file sudah diperbarui
         try {
             double harga = scanner.nextDouble();
             scanner.nextLine();
-            
+
             if (harga < 0) {
                 System.out.println("Harga tidak boleh negatif. Produk tidak ditambahkan.");
             } else {
@@ -98,7 +84,7 @@ public class GerlongElectric { // Nama kelas dan file sudah diperbarui
         }
     }
 
-    // Fungsi "Tampilkan Semua Produk" (Read)
+    // READ: tampilkan semua produk
     private static void tampilkanSemuaProduk() {
         if (daftarProduk.isEmpty()) {
             System.out.println("\nTidak ada produk yang tersedia.");
@@ -110,7 +96,7 @@ public class GerlongElectric { // Nama kelas dan file sudah diperbarui
         }
     }
 
-    // Fungsi "Ubah Produk" (Update)
+    // UPDATE: ubah produk berdasarkan ID
     private static void updateProduk() {
         System.out.println("\n--- Ubah Produk ---");
         System.out.print("Masukkan ID Produk yang ingin diubah: ");
@@ -118,7 +104,7 @@ public class GerlongElectric { // Nama kelas dan file sudah diperbarui
         try {
             int idToUpdate = scanner.nextInt();
             scanner.nextLine();
-            
+
             Produk produkToUpdate = cariProdukById(idToUpdate);
             if (produkToUpdate != null) {
                 System.out.print("Masukkan Nama baru: ");
@@ -134,18 +120,18 @@ public class GerlongElectric { // Nama kelas dan file sudah diperbarui
                 if (produkToUpdate.setHarga(newHarga)) {
                     System.out.println("Produk dengan ID " + idToUpdate + " berhasil diubah.");
                 } else {
-                    System.out.println("Gagal: Harga tidak boleh negatif. Perubahan dibatalkan.");
+                    System.out.println("Harga tidak boleh negatif. Perubahan dibatalkan.");
                 }
             } else {
                 System.out.println("Produk dengan ID " + idToUpdate + " tidak ditemukan.");
             }
         } catch (java.util.InputMismatchException e) {
-            System.out.println("Input ID tidak valid. Silakan masukkan angka.");
+            System.out.println("Input ID tidak valid. Masukkan angka.");
             scanner.nextLine();
         }
     }
 
-    // Fungsi "Hapus Produk" (Delete)
+    // DELETE: hapus produk
     private static void hapusProduk() {
         System.out.println("\n--- Hapus Produk ---");
         System.out.print("Masukkan ID Produk yang ingin dihapus: ");
@@ -153,7 +139,7 @@ public class GerlongElectric { // Nama kelas dan file sudah diperbarui
         try {
             int idToDelete = scanner.nextInt();
             scanner.nextLine();
-            
+
             Produk produkToDelete = cariProdukById(idToDelete);
             if (produkToDelete != null) {
                 daftarProduk.remove(produkToDelete);
@@ -161,41 +147,4 @@ public class GerlongElectric { // Nama kelas dan file sudah diperbarui
             } else {
                 System.out.println("Produk dengan ID " + idToDelete + " tidak ditemukan.");
             }
-        } catch (java.util.InputMismatchException e) {
-            System.out.println("Input ID tidak valid. Silakan masukkan angka.");
-            scanner.nextLine();
-        }
-    }
-    
-    // Fungsi "Cari Produk"
-    private static void cariProduk() {
-        System.out.println("\n--- Cari Produk ---");
-        System.out.print("Masukkan ID Produk yang ingin dicari: ");
-        
-        try {
-            int idToFind = scanner.nextInt();
-            scanner.nextLine();
-            
-            Produk foundProduk = cariProdukById(idToFind);
-            if (foundProduk != null) {
-                System.out.println("\nProduk ditemukan:");
-                foundProduk.display();
-            } else {
-                System.out.println("Produk dengan ID " + idToFind + " tidak ditemukan.");
-            }
-        } catch (java.util.InputMismatchException e) {
-            System.out.println("Input ID tidak valid. Silakan masukkan angka.");
-            scanner.nextLine();
-        }
-    }
-    
-    // Metode pembantu untuk mencari produk di dalam ArrayList berdasarkan ID.
-    private static Produk cariProdukById(int id) {
-        for (Produk produk : daftarProduk) {
-            if (produk.getId() == id) {
-                return produk;
-            }
-        }
-        return null;
-    }
-}
+        } catch (java.util.InputMismatchEx
