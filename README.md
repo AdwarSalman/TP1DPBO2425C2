@@ -5,7 +5,10 @@ Implementasi tersedia dalam empat bahasa: C++, Java, Python, dan PHP (web).
 Setiap implementasi menyediakan fungsi dasar manajemen produk: tambah (Create), tampil (Read), ubah (Update), hapus (Delete), dan cari (Search).
 
 ## Janji
-Saya bersumpah bahwa saya mengerjakan tugas ini sendiri dan tidak mencontek maupun memberi contek.
+Saya Muhammad Adwar Salman dengan 2401539
+mengerjakan tugas praktikum 1 dalam mata kuliah Desain Pemrograman Berbasis Objek (DPBO)
+untuk keberkahan-Nya maka saya tidak akan melakukan kecurangan
+seperti yang telah di spesifikasikan Aamiin.
 
 ## Desain Umum
 Desain inti mengikuti pola OOP: ada kelas `Produk` yang menjadi blueprint untuk setiap item produk. Atribut utama adalah `id`, `nama`, `jenis`, `harga` (pada implementasi PHP juga ada atribut `gambar`). 
