@@ -48,5 +48,5 @@ Interface web: ada form untuk tambah dan ubah (menggunakan multipart/form-data u
 
 ## Dokumentasi
 
-[![Dokumentasi Video](https://raw.githubusercontent.com/AdwarSalman/TP1DPBOC2/main/thumbnail.jpg)](https://drive.google.com/file/d/1GEDXRm8phPBnjrASQlGQsj70ejX9TvJK/view?usp=sharing)
+[![Dokumentasi Video](https://raw.githubusercontent.com/AdwarSalman/TP1DPBOC2/main/assets/thumbnail.jpg)](https://drive.google.com/file/d/1GEDXRm8phPBnjrASQlGQsj70ejX9TvJK/view?usp=sharing)
 
