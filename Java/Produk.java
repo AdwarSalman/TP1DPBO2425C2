@@ -1,12 +1,12 @@
 public class Produk {
 
-    // Atribut privat untuk enkapsulasi
-    private int id;         // ID unik untuk produk
-    private String nama;    // Nama produk
-    private String jenis;   // Jenis produk (kategori)
-    private double harga;   // Harga produk
+    // Atribut privat untuk menerapkan enkapsulasi
+    private int id;
+    private String nama;
+    private String jenis;
+    private double harga;
 
-    // Konstruktor → dipanggil saat objek dibuat
+    // Konstruktor
     public Produk(int id, String nama, String jenis, double harga) {
         this.id = id;
         this.nama = nama;
@@ -14,20 +14,35 @@ public class Produk {
         this.harga = harga;
     }
     
-    // Tidak ada destructor di Java.
-    // Java punya Garbage Collector yang otomatis menghapus objek yang tidak dipakai.
+    // Tidak perlu Destruktor di Java. Java memiliki Garbage Collector.
 
-    // Getter methods (akses atribut privat)
-    public int getId() { return id; }
-    public String getNama() { return nama; }
-    public String getJenis() { return jenis; }
-    public double getHarga() { return harga; }
+    // Getter methods
+    public int getId() {
+        return id;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public double getHarga() {
+        return harga;
+    }
     
-    // Setter methods (mengubah atribut privat)
-    public void setNama(String nama) { this.nama = nama; }
-    public void setJenis(String jenis) { this.jenis = jenis; }
+    // Setter methods
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
 
-    // Setter harga dengan validasi (tidak boleh negatif)
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
+    }
+
+    // Setter dengan validasi
     public boolean setHarga(double harga) {
         if (harga >= 0) {
             this.harga = harga;
